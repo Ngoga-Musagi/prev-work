@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexis Ngoga - AI Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3730a3 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 900px;
+            min-height: 600px;
+            display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card h1 {
+            color: #1a1a1a;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #1e3a8a, #3730a3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card h2 {
+            color: #1e3a8a;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            color: #4a5568;
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card p {
+            color: #4a5568;
+            line-height: 1.7;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .contribution {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            border-left: 4px solid #1e3a8a;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .contribution strong {
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .links {
+            margin-top: 25px;
+        }
+
+        .links a {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3a8a, #3730a3);
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            margin-right: 12px;
+            margin-bottom: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+        }
+
+        .links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 58, 138, 0.4);
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .contact-card {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(30, 58, 138, 0.1);
+        }
+
+        .contact-card strong {
+            color: #1e3a8a;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-card span {
+            color: #2d3748;
+            font-size: 1.1rem;
+        }
+
+        .contact-card a {
+            color: #1e3a8a;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-card a:hover {
+            color: #3730a3;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #1e3a8a;
+        }
+
+        .nav-btn:hover {
+            background: #1e3a8a;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #1e3a8a, #3730a3);
+            transition: width 0.6s ease;
+            z-index: 1000;
+        }
+
+        .page-indicator {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 500;
+            color: #1e3a8a;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .role-highlight {
+            background: linear-gradient(135deg, #1e3a8a, #3730a3);
+            color: white;
+            padding: 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .role-highlight h2 {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .role-highlight p {
+            color: white;
+            opacity: 0.95;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 2% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #1e3a8a;
+        }
+
+        .modal-title {
+            color: #1e3a8a;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .close {
+            color: #666;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            background: none;
+            border: none;
+        }
+
+        .close:hover {
+            color: #1e3a8a;
+        }
+
+        .poster-image {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .poster-placeholder {
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            border: 2px dashed #1e3a8a;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #4a5568;
+        }
+
+        .poster-placeholder h3 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .card {
+                padding: 25px;
+                min-height: auto;
+            }
+            
+            .card h1 {
+                font-size: 2rem;
+            }
+            
+            .card h2 {
+                font-size: 1.5rem;
+            }
+            
+            .navigation {
+                bottom: 20px;
+            }
+            
+            .nav-btn {
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="page-indicator" id="pageIndicator">1 / 5</div>
+
+    <div class="container">
+        <!-- Project 1 -->
+        <div class="card active" id="card1">
+            <h2>Assistant for Effortless Cloud Resource Management and Experimentation</h2>
+            <h3>Capstone Project – Master's Program in Artificial Intelligence</h3>
+            
+            <p>This project focused on <strong>democratizing access to cloud computing</strong> by enabling users—especially those without technical expertise—to <strong>provision and manage cloud resources using natural language</strong> through an <strong>LLM-powered agent</strong>.</p>
+            
+            <p>The system functions as a <strong>conversational interface</strong> that interprets user input in plain English (e.g., "I want to deploy a scalable web app under $10/month") and intelligently <strong>recommends and provisions cloud services</strong> aligned with their budget, usage goals, and performance needs.</p>
+            
+            <p>It also supports <strong>resource management</strong> (adding, modifying, and removing instances) using natural language, reducing the technical barriers often associated with cloud adoption and lowering the entry threshold for learners and non-engineers. This helps address the <strong>steep learning curve</strong> commonly encountered in cloud education and training.</p>
+            
+            <div class="contribution">
+                <strong>My Contribution:</strong> Designed the overall agentic system architecture and developed the backend tool-calling functionality that enables the LLM to interact with cloud services in response to user prompts.
+            </div>
+            
+            <div class="links">
+                <a href="https://github.com/labayifa/eai-capstone-cloud-resource-mng" target="_blank">🔗 GitHub Repository</a>
+                <a href="https://www.youtube.com/watch?v=0_Sx49l4VHQ" target="_blank">🎥 Watch Demo</a>
+            </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="card" id="card2">
+            <h2>Intelligent Real-Time Weather Data Dissemination System</h2>
+            <h3>Web & Mobile + Offline Mode</h3>
+            
+            <p>This project focused on developing a <strong>weather-aware AI assistant</strong> that delivers <strong>real-time, localized weather insights</strong> to rural users through both <strong>web and mobile platforms</strong>, with support for <strong>offline access</strong> in low-connectivity environments.</p>
+            
+            <p>By leveraging <strong>LLMs and speech-to-text models</strong>, the system allows users to ask natural language questions (spoken or typed) about weather conditions and receive actionable, personalized recommendations—such as whether to proceed with agricultural activities, school events, or travel plans—based on forecasts.</p>
+            
+            <div class="contribution">
+                <strong>My Contribution:</strong> I developed the chatbot logic to interpret user questions and provide tailored weather-based advice and built a web-based dashboard for sharing forecast updates and insights in a structured, user-friendly format.
+            </div>
+            
+            <p><strong>Technology:</strong> ADK, Google Cloud Run, Vercel, Gemini models</p>
+            
+            <div class="links">
+                <a href="https://meteorwanda-dashboard.vercel.app/" target="_blank">🚀 Working Prototype</a>
+            </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="card" id="card3">
+            <h2>AI for Smallholder Farming Using Satellite Imagery</h2>
+            <h3>Research Project – Multi-Scale Fusion for Enhanced Crop Mapping</h3>
+            
+            <p>This project focused on improving <strong>crop-type mapping and yield estimation</strong> for smallholder farmers by integrating <strong>multi-scale remote sensing data</strong>. We developed an AI-based fusion pipeline that combines <strong>low-resolution Sentinel-2 satellite data</strong> with <strong>high-resolution drone imagery</strong> to produce highly accurate spatial and spectral representations of farmland.</p>
+            
+            <p>The system is designed to function even in <strong>low-bandwidth settings</strong>, and enables better agricultural planning, monitoring, and policy development by improving the resolution and interpretability of satellite-derived insights.</p>
+            
+            <div class="contribution">
+                <strong>My Contribution:</strong> I led the development of the <strong>image fusion pipeline</strong>, including pre-processing, alignment, and deep learning-based integration of multi-source imagery to improve crop-type classification and prediction accuracy.
+            </div>
+            
+            <div class="links">
+                <a href="#" onclick="openPosterModal()" target="_blank">📄 View Research Poster</a>
+            </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="card" id="card4">
+            <h2>AI for Education in Low-Connectivity Environments</h2>
+            <h3>Applied AI Project – Inclusive Educational Access through LLMs (Ongoing)</h3>
+            
+            <p>This ongoing project aims to make <strong>AI-powered educational support accessible in underserved regions</strong>, particularly in communities with <strong>limited or no internet connectivity</strong>. The system is being built to operate through <strong>offline mobile apps</strong>, <strong>USSD-based queries</strong>, and <strong>Interactive Voice Response (IVR)</strong>—making it usable even on basic phones.</p>
+            
+            <p>At its core is a fine-tuned <strong>LLaMA 2 model</strong>, trained on curriculum-aligned content and localized learning materials. The platform is designed to <strong>guide students in self-paced learning</strong>, track their progress using <strong>reinforcement learning</strong>, and provide <strong>automated evaluations</strong> to support learning outcomes. It also enables teachers to deliver <strong>personalized learning experiences</strong> based on each student's performance and needs.</p>
+            
+            <div class="contribution">
+                <strong>My Contribution:</strong> I'm leading the model fine-tuning with curriculum-aligned content and building the AI-powered interface that enables educational Q&A and progress tracking through offline channels like USSD and IVR.
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div class="card" id="card5">
+            <div class="role-highlight">
+                <h2>AI Research Consultant</h2>
+                <p>Currently serving as an <strong>AI Research Consultant</strong> at the <strong>Kigali Collaborative Research Center (KCRC)</strong>, where I support applied AI projects for social impact across agriculture, education, and infrastructure. My work focuses on designing resilient, context-aware AI systems suited for African development challenges.</p>
+            </div>
+            
+            <h1>Contact Information</h1>
+            
+            <div class="contact-info">
+                <div class="contact-card">
+                    <strong>Name</strong>
+                    <span>Alexis Ngoga</span>
+                </div>
+                
+                <div class="contact-card">
+                    <strong>Email</strong>
+                    <a href="mailto:r.alexisngoga20@gmail.com">r.alexisngoga20@gmail.com</a>
+                </div>
+                
+                <div class="contact-card">
+                    <strong>Phone</strong>
+                    <a href="tel:+250784720789">+250 784 720 789</a>
+                </div>
+                
+                <div class="contact-card">
+                    <strong>GitHub</strong>
+                    <a href="https://github.com/Ngoga-Musagi" target="_blank">github.com/Ngoga-Musagi</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Poster Modal -->
+    <div id="posterModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">AI for Smallholder Farming - Research Poster</h2>
+                <button class="close" onclick="closePosterModal()">&times;</button>
+            </div>
+            <img src="poster.png" alt="AI for Smallholder Farming Research Poster" class="poster-image">
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousCard()" id="prevBtn">←</button>
+        <button class="nav-btn" onclick="nextCard()" id="nextBtn">→</button>
+    </div>
+
+    <script>
+        let currentCard = 1;
+        const totalCards = 5;
+
+        function updateProgressBar() {
+            const progress = (currentCard / totalCards) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('pageIndicator').textContent = `${currentCard} / ${totalCards}`;
+        }
+
+        function showCard(cardNumber) {
+            // Hide all cards
+            for (let i = 1; i <= totalCards; i++) {
+                document.getElementById(`card${i}`).classList.remove('active');
+            }
+            
+            // Show current card with animation
+            setTimeout(() => {
+                document.getElementById(`card${cardNumber}`).classList.add('active');
+            }, 300);
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = cardNumber === 1;
+            document.getElementById('nextBtn').disabled = cardNumber === totalCards;
+            
+            updateProgressBar();
+        }
+
+        function nextCard() {
+            if (currentCard < totalCards) {
+                currentCard++;
+                showCard(currentCard);
+            }
+        }
+
+        function previousCard() {
+            if (currentCard > 1) {
+                currentCard--;
+                showCard(currentCard);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                nextCard();
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                previousCard();
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let startX = 0;
+        let endX = 0;
+
+        document.addEventListener('touchstart', function(event) {
+            startX = event.touches[0].clientX;
+        });
+
+        document.addEventListener('touchend', function(event) {
+            endX = event.changedTouches[0].clientX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const threshold = 50;
+            const diff = startX - endX;
+            
+            if (Math.abs(diff) > threshold) {
+                if (diff > 0) {
+                    nextCard(); // Swipe left - next card
+                } else {
+                    previousCard(); // Swipe right - previous card
+                }
+            }
+        }
+
+        // Initialize
+        showCard(1);
+
+        // Poster Modal Functions
+        function openPosterModal() {
+            event.preventDefault();
+            document.getElementById('posterModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closePosterModal() {
+            document.getElementById('posterModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('posterModal');
+            if (event.target === modal) {
+                closePosterModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closePosterModal();
+            }
+        });
+    </script>
+</body>
+</html>
